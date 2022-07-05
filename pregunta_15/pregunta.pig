@@ -19,4 +19,16 @@ evaluación, pig sera eejcutado ejecutado en modo local:
 $ pig -x local -f pregunta.pig
 
 */
+data = LOAD 'data.csv' USING PigStorage(',') 
+    AS (
+        id:int, 
+        name:chararray, 
+        lastName:chararray,
+        date:chararray,
+        color:chararray
+        );
 
+filtered = FILTER data BY (color MATCHES 'blue') AND (name MATCHES '.*^[Z].*');
+colors = FOREACH filtered GENERATE name, color;
+
+STORE colors INTO 'output' USING PigStorage(' '); 
